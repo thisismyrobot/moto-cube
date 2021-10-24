@@ -1,41 +1,58 @@
-$fn = 200;
-wall_thickness = 3;
-cam_axis_inset_from_wall_outside = 10;
-cam_radius = cam_axis_inset_from_wall_outside;
-cam_thickness = 3;
-min_cam_width = 5;
-flat_length = 20;
-outer_radius = sqrt(pow(cam_radius, 2) + pow(flat_length, 2));
+include <servo.scad>;
 
-//$t=0;
+$fn = 50;
+$t = 0.2;
+
+// For making holes.
+diff = 1;
+
+// For spacing moving parts.
+gaps = 0.25;
+
+cam_axis_inset_from_wall_outside = servo_mountsOut + servo_gearholderInset;
+cam_radius = cam_axis_inset_from_wall_outside;
+cam_flat_length = 20;
+cam_outer_radius = sqrt(pow(cam_radius, 2) + pow(cam_flat_length, 2));
+cam_thickness = 3;
+
+wall_thickness = 3;
+box_size = (servo_totalHeight + wall_thickness + (cam_thickness / 2)) * 2;
+
 cam_rotation = $t < 0.5 ? $t * 180 : 180 - ($t * 180);
 
-module box(cam_radius, flat_len, camangle) {
-    length = wall_thickness * 30;
-    height = wall_thickness * 15;
-    translate([0, 0, -height]) {
-        rotate([0, 0, 180]) color("silver") cube([length, wall_thickness, height]);
-        rotate([0, 0, -90]) translate([0, -wall_thickness, 0]) color("silver") cube([length, wall_thickness, height]);
-        rotate([0, 0, 180]) color("silver") cube([length, length, 5]);
+module box(cam_angle) {
+    height = box_size;
+    difference() {
+        translate([0, 0, -height/2]) color("silver") {
+            cube([box_size, wall_thickness, height]);
+            rotate([0, 0, 90]) translate([0, -wall_thickness, 0]) cube([box_size, wall_thickness, height]);
+            cube([box_size, box_size, wall_thickness]);
+        }
+        union() {
+            translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + gaps)]) {
+                cylinder(r=cam_outer_radius + gaps, h=cam_thickness + (gaps*2));
+            }
+            translate([-diff, cam_axis_inset_from_wall_outside - (servo_width/2) - gaps, -servo_mountsTop+servo_mountsThickness]) {
+                cube([wall_thickness + diff*2, servo_width + gaps*2, servo_mountsThickness + gaps*2]);
+            }
+        }
     }
     
-    translate([-cam_radius, -cam_radius, 0]) color("yellow") cam(cam_radius, flat_len, camangle);
+    translate([cam_radius, cam_radius, -cam_thickness/2]) color("yellow") cam(cam_angle + 180);
+    
+    translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -cam_thickness/2]) sg90Servo(cam_angle);
 }
 
-module cam(cam_radius, flat_len, camangle) {
+module cam(camangle) {
     rotate([0, 0, -90]) {
         rotate([0, 0, camangle]) {
-            cylinder(r=1, h=10);
-
             hull() {
-                
                 cylinder(r=cam_radius, h=cam_thickness);
-                
                 difference() {   
-                    cylinder(r=outer_radius, h=cam_thickness);
+                    cylinder(r=cam_outer_radius, h=cam_thickness);
                     union() {
-                        rotate([0, 0, 90]) translate([0, -flat_len, -1]) cube([outer_radius * 2, outer_radius * 2, cam_thickness * 2]);
-                        rotate([0, 0, 90]) mirror([1, -1, 0]) translate([0, -flat_len, -1]) cube([outer_radius * 2, outer_radius * 2, cam_thickness * 2]);
+                        rotate([0, 0, 90]) translate([0, -cam_flat_length, -diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
+                        rotate([0, 0, 90]) mirror([1, -1, 0]) translate([0, -cam_flat_length, -diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
                     }
                 }
             }
@@ -44,15 +61,12 @@ module cam(cam_radius, flat_len, camangle) {
 }
 
 function separation_angle(d, r, c) =
-    d < acos(cam_radius/outer_radius) ?
+    d < acos(r/c) ?
         -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r + sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))))
         :
         -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r - sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))));
 
-box_angle = $t < 0.5 ? separation_angle(cam_rotation, cam_radius, outer_radius) : 180; 
-echo(box_angle);
-echo(acos(cam_radius/outer_radius));
+box_angle = $t < 0.5 ? separation_angle(cam_rotation, cam_radius, cam_outer_radius) : 180; 
 
-rotate([0, 0, box_angle]) box(cam_axis_inset_from_wall_outside, flat_length, cam_rotation);
-
-mirror([1, 0, 0]) color("grey") box(cam_axis_inset_from_wall_outside, flat_length, cam_rotation);
+box(cam_rotation);
+rotate([0, 0, 90 - box_angle]) box(-cam_rotation);
