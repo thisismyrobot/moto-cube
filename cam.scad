@@ -1,4 +1,4 @@
-$fn = 100;
+$fn = 200;
 wall_thickness = 3;
 cam_axis_inset_from_wall_outside = 10;
 cam_radius = cam_axis_inset_from_wall_outside;
@@ -6,7 +6,7 @@ cam_thickness = 3;
 min_cam_width = 5;
 flat_length = 20;
 
-$t=0;
+$t=0.7;
 cam_rotation = $t * 90;
 
 module box(cam_radius, flat_len, camangle) {
@@ -42,7 +42,14 @@ module cam(cam_radius, flat_len, camangle) {
     }
 }
 
-box_angle = -cam_rotation * 2;
+function separation_angle(d, r, c) =
+    d < 63 ?
+        -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r + sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))))
+        :
+        -d * 2;
+
+box_angle = separation_angle(cam_rotation, cam_radius, sqrt(pow(cam_radius, 2) + pow(flat_length, 2)));
+echo(box_angle);
 
 rotate([0, 0, box_angle]) box(cam_axis_inset_from_wall_outside, flat_length, cam_rotation);
 
