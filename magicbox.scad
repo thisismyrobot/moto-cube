@@ -1,8 +1,5 @@
 include <servo.scad>;
 
-$fn = 50;
-$t = 0.25;
-
 // For making holes.
 slot_diff = 1;
 
@@ -19,66 +16,67 @@ cam_thickness = 3;
 wall_thickness = 3;
 box_size = (servo_totalHeight + wall_thickness + (cam_thickness / 2) - servo_armThickness) * 2;
 
-hinge_radius = 5;
+hinge_radius = 2.5;
 hinge_gap = 0.2;
-
-cam_rotation = $t < 0.5 ? $t * 180 : 180 - ($t * 180);
+hinge_height = 10;
+hinge_axis_sep = 10;
 
 module box(cam_angle) {
+    color("silver") side();
+    mirror([0, 1, 0]) rotate([0, 0, -90]) color("silver") side_with_servo_mount_slot();
+        
+    translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -cam_thickness/2 + servo_armThickness]) sg90Servo(cam_angle);
+    translate([cam_radius, cam_radius, -cam_thickness/2]) color("yellow") rotate([0, 0, 180 + cam_angle]) cam();
+}
+
+module side_with_servo_mount_slot() {
+    difference() {
+        side();
+        translate([cam_axis_inset_from_wall_outside - (servo_width/2) - fit_gaps, -slot_diff, -servo_mountsTop+servo_mountsThickness+servo_armThickness+fit_gaps*2]) {
+            cube([servo_width + fit_gaps*2, wall_thickness + slot_diff*2, servo_mountsThickness + fit_gaps*2]);
+        }
+    }    
+}
+
+module side() {
     height = box_size;
     difference() {
-        translate([0, 0, -height/2]) color("silver") {
-            cube([box_size, wall_thickness, height]);
-            rotate([0, 0, 90]) translate([0, -wall_thickness, 0]) cube([box_size, wall_thickness, height]);
-            cube([box_size, box_size, wall_thickness]);
-        }
+        translate([0, 0, -height/2]) cube([box_size, wall_thickness, height]);
         union() {
             translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + motion_gaps)]) {
                 cylinder(r=cam_outer_radius + motion_gaps, h=cam_thickness + (motion_gaps*2));
             }
-            translate([-slot_diff, cam_axis_inset_from_wall_outside - (servo_width/2) - fit_gaps, -servo_mountsTop+servo_mountsThickness+servo_armThickness+fit_gaps*2]) {
-                cube([wall_thickness + slot_diff*2, servo_width + fit_gaps*2, servo_mountsThickness + fit_gaps*2]);
+            translate([0, 0, hinge_axis_sep]) hinge_slot();
+            translate([0, 0, -hinge_axis_sep-hinge_height]) hinge_slot();
+            translate([0, 0, -height/2 - slot_diff]) rotate([0, 0, 45]) translate([-slot_diff, 0, 0]) cube([pow(wall_thickness,2), pow(wall_thickness,2), height + slot_diff*2]);
+        }
+    }
+}
+
+module hinge_slot() {
+    inset = sqrt(2 * pow(hinge_radius + hinge_gap/2, 2));
+    difference(){
+        translate([-slot_diff, -slot_diff, 0]) cube([inset+slot_diff, inset+slot_diff, hinge_height]);
+        union() {
+            translate([inset, 0, -slot_diff]) {
+                cylinder(r=hinge_radius, h=hinge_height + slot_diff*2);
+                rotate([0, 0, 45]) translate([0, -hinge_radius, 0]) cube([hinge_radius*2, hinge_radius*2, hinge_height + slot_diff*2]);
             }
         }
     }
-    
-    translate([cam_radius, cam_radius, -cam_thickness/2]) color("yellow") cam(cam_angle + 180);
-    
-    translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -cam_thickness/2 + servo_armThickness]) sg90Servo(cam_angle);
-    
-    hinge();
 }
 
-module hinge() {
-    inset = sqrt(2 * pow(hinge_radius + hinge_gap/2, 2));
-    translate([inset, 0, 0]) cylinder(r=hinge_radius, h=20);
-    translate([0, inset, 0]) cylinder(r=hinge_radius, h=20);
-}
-
-module cam(camangle) {
+module cam() {
     rotate([0, 0, -90]) {
-        rotate([0, 0, camangle]) {
-            hull() {
-                cylinder(r=cam_radius, h=cam_thickness);
-                difference() {   
-                    cylinder(r=cam_outer_radius, h=cam_thickness);
-                    union() {
-                        rotate([0, 0, 90]) translate([0, -cam_flat_length, -slot_diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
-                        rotate([0, 0, 90]) mirror([1, -1, 0]) translate([0, -cam_flat_length, -slot_diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
-                    }
+        hull() {
+            cylinder(r=cam_radius, h=cam_thickness);
+            difference() {   
+                cylinder(r=cam_outer_radius, h=cam_thickness);
+                union() {
+                    rotate([0, 0, 90]) translate([0, -cam_flat_length, -slot_diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
+                    rotate([0, 0, 90]) mirror([1, -1, 0]) translate([0, -cam_flat_length, -slot_diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
                 }
             }
         }
     }
 }
-
-function separation_angle(d, r, c) =
-    d < acos(r/c) ?
-        -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r + sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))))
-        :
-        -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r - sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))));
-
-box_angle = $t < 0.5 ? separation_angle(cam_rotation, cam_radius, cam_outer_radius) : 180; 
-
-box(cam_rotation);
-//rotate([0, 180, -box_angle]) box(cam_rotation);

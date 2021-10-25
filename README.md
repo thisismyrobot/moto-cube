@@ -31,7 +31,9 @@ place at ends of motion.
 
 ## Model
 
-magicbox.scad is the assembled idea, at the moment.
+assembly.scad shows the assembled idea, at the moment.
+
+magicbox.scad has all the parts themselves.
 
 ## Motion study of the cams, in OpenSCAD
 
