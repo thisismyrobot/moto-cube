@@ -25,9 +25,13 @@ cam on the adjacent box.
 No idea of the approach to doing the hinge, but I may use magnets to hold in
 place at ends of motion.
 
+## Model
+
+magicbox.scad is the assembled idea, at the moment.
+
 ## Motion study of the cams, in OpenSCAD
 
-![](motion_study.gif)
+![](motion/motion_study.gif)
 
 ## Algorithm for separation angle between boxes based on cam rotation
 

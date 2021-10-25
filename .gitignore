@@ -1,1 +1,2 @@
-frame*.png
+motion/frame*.png
+/motion/ffmpeg.exe
