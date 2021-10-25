@@ -16,8 +16,6 @@ def box_angle_degrees(cam_angle_degrees, cam_inner_radius, cam_outer_radius):
     r = float(cam_inner_radius)
     c = float(cam_outer_radius)
 
-    ninty = math.radians(90)
-
     if d < math.acos(r/c):
         return math.degrees(2 * math.atan((c * math.sin(math.radians(90) - math.acos(r/c) + d) - r) / (r + math.sqrt(pow(c, 2) - pow(c * math.sin(math.radians(90) - math.acos(r/c) + d), 2)))))
     else:
@@ -38,11 +36,8 @@ def plot(cam_inner_radius, cam_outer_radius):
                     in y_cam_angles]
     matplotlib.pyplot.plot(x_percents, y_box_angles)
     matplotlib.pyplot.ylabel(f'Cam: {cam_inner_radius}/{cam_outer_radius}')
-     
-    # giving a title to my graph
+
     matplotlib.pyplot.title('My first graph!')
-     
-    # function to show the plot
     matplotlib.pyplot.show()
 
 

@@ -19,6 +19,9 @@ cam_thickness = 3;
 wall_thickness = 3;
 box_size = (servo_totalHeight + wall_thickness + (cam_thickness / 2) - servo_armThickness) * 2;
 
+hinge_radius = 5;
+hinge_gap = 0.2;
+
 cam_rotation = $t < 0.5 ? $t * 180 : 180 - ($t * 180);
 
 module box(cam_angle) {
@@ -42,6 +45,14 @@ module box(cam_angle) {
     translate([cam_radius, cam_radius, -cam_thickness/2]) color("yellow") cam(cam_angle + 180);
     
     translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -cam_thickness/2 + servo_armThickness]) sg90Servo(cam_angle);
+    
+    hinge();
+}
+
+module hinge() {
+    inset = sqrt(2 * pow(hinge_radius + hinge_gap/2, 2));
+    translate([inset, 0, 0]) cylinder(r=hinge_radius, h=20);
+    translate([0, inset, 0]) cylinder(r=hinge_radius, h=20);
 }
 
 module cam(camangle) {
@@ -70,4 +81,4 @@ function separation_angle(d, r, c) =
 box_angle = $t < 0.5 ? separation_angle(cam_rotation, cam_radius, cam_outer_radius) : 180; 
 
 box(cam_rotation);
-rotate([0, 180, -box_angle]) box(cam_rotation);
+//rotate([0, 180, -box_angle]) box(cam_rotation);
