@@ -1,3 +1,5 @@
+diff = 1;  // For holes.
+
 servo_length = 22.5;
 servo_width = 12.3;
 servo_height = 23.5;

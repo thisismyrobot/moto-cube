@@ -4,10 +4,11 @@ $fn = 50;
 $t = 0.2;
 
 // For making holes.
-diff = 1;
+slot_diff = 1;
 
 // For spacing moving parts.
-gaps = 0.25;
+fit_gaps = 0.1;
+motion_gaps = 0.5;
 
 cam_axis_inset_from_wall_outside = servo_mountsOut + servo_gearholderInset;
 cam_radius = cam_axis_inset_from_wall_outside;
@@ -29,11 +30,11 @@ module box(cam_angle) {
             cube([box_size, box_size, wall_thickness]);
         }
         union() {
-            translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + gaps)]) {
-                cylinder(r=cam_outer_radius + gaps, h=cam_thickness + (gaps*2));
+            translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + motion_gaps)]) {
+                cylinder(r=cam_outer_radius + motion_gaps, h=cam_thickness + (motion_gaps*2));
             }
-            translate([-diff, cam_axis_inset_from_wall_outside - (servo_width/2) - gaps, -servo_mountsTop+servo_mountsThickness]) {
-                cube([wall_thickness + diff*2, servo_width + gaps*2, servo_mountsThickness + gaps*2]);
+            translate([-slot_diff, cam_axis_inset_from_wall_outside - (servo_width/2) - fit_gaps, -servo_mountsTop+servo_mountsThickness]) {
+                cube([wall_thickness + slot_diff*2, servo_width + fit_gaps*2, servo_mountsThickness + fit_gaps*2]);
             }
         }
     }
@@ -51,8 +52,8 @@ module cam(camangle) {
                 difference() {   
                     cylinder(r=cam_outer_radius, h=cam_thickness);
                     union() {
-                        rotate([0, 0, 90]) translate([0, -cam_flat_length, -diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
-                        rotate([0, 0, 90]) mirror([1, -1, 0]) translate([0, -cam_flat_length, -diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
+                        rotate([0, 0, 90]) translate([0, -cam_flat_length, -slot_diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
+                        rotate([0, 0, 90]) mirror([1, -1, 0]) translate([0, -cam_flat_length, -slot_diff]) cube([cam_outer_radius * 2, cam_outer_radius * 2, cam_thickness * 2]);
                     }
                 }
             }
@@ -69,4 +70,4 @@ function separation_angle(d, r, c) =
 box_angle = $t < 0.5 ? separation_angle(cam_rotation, cam_radius, cam_outer_radius) : 180; 
 
 box(cam_rotation);
-rotate([0, 0, 90 - box_angle]) box(-cam_rotation);
+rotate([0, 180, -box_angle]) box(cam_rotation);
