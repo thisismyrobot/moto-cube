@@ -53,8 +53,25 @@ All angles need conversion to radians
 
 Takes into account the whole turn:
 
-    function separation_angle(d, r, c) =
-        d < acos(r/c) ?
-            -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r + sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))))
-            :
-            -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r - sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))));
+```OpenSCAD
+function separation_angle(d, r, c) =
+    d < acos(r/c) ?
+        -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r + sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))))
+        :
+        -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r - sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))));
+```
+
+### Python
+
+```python
+def box_angle_degrees(cam_angle_degrees, cam_inner_radius, cam_outer_radius):
+    # Shorthand variables as per other implementations
+    d = math.radians(cam_angle_degrees)
+    r = float(cam_inner_radius)
+    c = float(cam_outer_radius)
+
+    if d < math.acos(r/c):
+        return math.degrees(2 * math.atan((c * math.sin(math.radians(90) - math.acos(r/c) + d) - r) / (r + math.sqrt(pow(c, 2) - pow(c * math.sin(math.radians(90) - math.acos(r/c) + d), 2)))))
+    else:
+        return math.degrees(2 * math.atan((c * math.sin(math.radians(90) - math.acos(r/c) + d) - r) / (r - math.sqrt(pow(c, 2) - pow(c * math.sin(math.radians(90) - math.acos(r/c) + d), 2)))))
+```
