@@ -17,6 +17,10 @@ https://www.youtube.com/watch?v=opGOs7Zxeas which was inspired by
 https://www.youtube.com/erikabergworks (see also
 https://www.instagram.com/erik_aberg_works/).
 
+![](configurations.jpg)
+
+Source: https://www.instagram.com/p/CMxrGzos_UX/
+
 ## Current approach
 
 Motorised cams that can push out of the side, each by 90°, against a matching

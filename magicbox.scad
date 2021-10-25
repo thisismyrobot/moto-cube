@@ -1,7 +1,7 @@
 include <servo.scad>;
 
 $fn = 50;
-$t = 0.2;
+$t = 0.25;
 
 // For making holes.
 slot_diff = 1;
@@ -33,7 +33,7 @@ module box(cam_angle) {
             translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + motion_gaps)]) {
                 cylinder(r=cam_outer_radius + motion_gaps, h=cam_thickness + (motion_gaps*2));
             }
-            translate([-slot_diff, cam_axis_inset_from_wall_outside - (servo_width/2) - fit_gaps, -servo_mountsTop+servo_mountsThickness]) {
+            translate([-slot_diff, cam_axis_inset_from_wall_outside - (servo_width/2) - fit_gaps, -servo_mountsTop+servo_mountsThickness+servo_armThickness+fit_gaps*2]) {
                 cube([wall_thickness + slot_diff*2, servo_width + fit_gaps*2, servo_mountsThickness + fit_gaps*2]);
             }
         }
