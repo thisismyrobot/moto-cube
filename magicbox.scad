@@ -22,9 +22,9 @@ hinge_height = 10;
 hinge_axis_sep = 10;
 
 module box(cam_angle) {
-    color("silver") side();
+    color("silver") side_with_servo_rear_mount();
     mirror([0, 1, 0]) rotate([0, 0, -90]) color("silver") side_with_servo_mount_slot();
-        
+
     translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -cam_thickness/2 + servo_armThickness]) sg90Servo(cam_angle);
     translate([cam_radius, cam_radius, -cam_thickness/2]) color("yellow") rotate([0, 0, 180 + cam_angle]) cam();
 }
@@ -35,7 +35,17 @@ module side_with_servo_mount_slot() {
         translate([cam_axis_inset_from_wall_outside - (servo_width/2) - fit_gaps, -slot_diff, -servo_mountsTop+servo_mountsThickness+servo_armThickness+fit_gaps*2]) {
             cube([servo_width + fit_gaps*2, wall_thickness + slot_diff*2, servo_mountsThickness + fit_gaps*2]);
         }
-    }    
+    }
+}
+
+module side_with_servo_rear_mount() {
+    side();
+    translate([servo_length + servo_mountsOut + fit_gaps, 0, -servo_totalHeight + servo_mountsTop - cam_thickness/2 + servo_armThickness - servo_mountsThickness - fit_gaps - 10]) {
+         cube([servo_mountsOut, servo_mountsOut+servo_width, 10]);
+    }
+    translate([servo_length + fit_gaps, 0, -servo_totalHeight + servo_mountsTop - cam_thickness/2 + servo_armThickness - servo_mountsThickness - fit_gaps - 10]) {
+         cube([servo_mountsOut, servo_mountsOut - fit_gaps, 10]);
+    }
 }
 
 module side() {
