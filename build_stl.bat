@@ -1,1 +1,1 @@
-"C:\Program Files\OpenSCAD\openscad.com" -o print.stl print_layout.scad
+"C:\Program Files\OpenSCAD\openscad.com" -o stls\print_layout.stl print_layout.scad
