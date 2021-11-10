@@ -20,14 +20,21 @@ servo_hornStubHeight = 3.5;
 servo_hornStubRadius = 2.3;
 
 servo_armThickness = 1.4;
-servo_armStalkRadius = 3.3;
-servo_armStalkHeight = 3.7;
+servo_armStalkRadius = 3.5;
+servo_armStalkHeight = 3.9;
 servo_armStalkAboutBase = 0.75;
-servo_armBigRadius = 2.8;
-servo_armSmallRadius = 1.9;
-servo_armCentersLength = 14.5;
-servo_armEndholeRadius = 0.4;
+servo_armHornHoleRadius = 0.4;
 servo_armHoleSpacing = 2;
+servo_bigArmBigRadius = 3.5;
+servo_bigArmBigRadiusOut = 1;
+servo_bigArmSmallRadius = 1.8;
+servo_bigArmCentersLength = 16.9;
+servo_bigArmHornHoleCount = 7;
+servo_smallArmBigRadius = 1.8;
+servo_smallArmBigRadiusOut = 0;
+servo_smallArmSmallRadius = 1.8;
+servo_smallArmCentersLength = 6.8;
+servo_smallArmHornHoleCount = 2;
 
 servo_wireFromBottom = 1.5;
 servo_wireWidth = 3.6;
@@ -46,7 +53,9 @@ module sg90Servo(rotation) {
 
         color([1, 1, 1]) {
             _horn();
-            _arm(rotation);
+            translate([servo_width / 2, servo_width / 2, servo_height + servo_gearholderHeight + servo_armStalkAboutBase]) {
+                _arm(rotation, true);
+            }
         }
     }
 }
@@ -103,32 +112,85 @@ module _horn() {
     }
 }
 
-module _arm(rotation) {
-    translate([servo_width / 2, servo_width / 2, servo_height + servo_gearholderHeight + servo_armStalkAboutBase]) {
-        cylinder(h=servo_armStalkHeight, r=servo_armStalkRadius);
+module _arm(rotation, holes) {
+    cylinder(h=servo_armStalkHeight, r=servo_armStalkRadius);
 
-        difference() {
-            hull() {
-                translate([0, 0, servo_armStalkHeight - servo_armThickness]) {
-                    cylinder(h=servo_armThickness, r=servo_armBigRadius);
-
-                    rotate([0, 0, rotation]) {
-                        translate([servo_armCentersLength, 0, 0]) {
-                            cylinder(h=servo_armThickness, r=servo_armSmallRadius);
-                        }
+    difference() {
+        hull() {
+            translate([0, 0, servo_armStalkHeight - servo_armThickness]) {
+                rotate([0, 0, rotation]) {
+                    translate([servo_bigArmBigRadiusOut, -servo_bigArmBigRadius, 0]) cube([0.1, servo_bigArmBigRadius*2, servo_armThickness]);
+                    translate([servo_bigArmCentersLength, 0, 0]) {
+                        cylinder(h=servo_armThickness, r=servo_bigArmSmallRadius);
                     }
                 }
             }
+        }
 
-            for(offset = [0:5])  {
+        if (holes) {
+            for(offset = [0:servo_bigArmHornHoleCount])  {
                 translate([0, 0, servo_armStalkHeight - servo_armThickness - 1]) {
                     rotate([0, 0, rotation]) {
-                        translate([servo_armCentersLength - (servo_armHoleSpacing * offset), 0, 0]) {
-                            cylinder(h=servo_armThickness + 2, r=servo_armEndholeRadius);
+                        translate([servo_bigArmCentersLength - (servo_armHoleSpacing * offset), 0, 0]) {
+                            cylinder(h=servo_armThickness + 2, r=servo_armHornHoleRadius);
                         }
                     }
                 }
             }
         }
     }
+    
+    rotate([0, 0, 90]) difference() {
+        hull() {
+            translate([0, 0, servo_armStalkHeight - servo_armThickness]) {
+                rotate([0, 0, rotation]) {
+                    translate([servo_smallArmBigRadiusOut, -servo_smallArmBigRadius, 0]) cube([0.01, servo_smallArmBigRadius*2, servo_armThickness]);
+                    translate([servo_smallArmCentersLength, 0, 0]) {
+                        cylinder(h=servo_armThickness, r=servo_smallArmSmallRadius);
+                    }
+                }
+            }
+        }
+
+        if (holes) {
+            for(offset = [0:servo_smallArmHornHoleCount])  {
+                translate([0, 0, servo_armStalkHeight - servo_armThickness - 1]) {
+                    rotate([0, 0, rotation]) {
+                        translate([servo_smallArmCentersLength - (servo_armHoleSpacing * offset), 0, 0]) {
+                            cylinder(h=servo_armThickness + 2, r=servo_armHornHoleRadius);
+                        }
+                    }
+                }
+            }
+        }
+    }       
+    
+    rotate([0, 0, -90]) difference() {
+        hull() {
+            translate([0, 0, servo_armStalkHeight - servo_armThickness]) {
+                rotate([0, 0, rotation]) {
+                    translate([servo_smallArmBigRadiusOut, -servo_smallArmBigRadius, 0]) cube([0.01, servo_smallArmBigRadius*2, servo_armThickness]);
+                    translate([servo_smallArmCentersLength, 0, 0]) {
+                        cylinder(h=servo_armThickness, r=servo_smallArmSmallRadius);
+                    }
+                }
+            }
+        }
+
+        if (holes) {
+            for(offset = [0:servo_smallArmHornHoleCount])  {
+                translate([0, 0, servo_armStalkHeight - servo_armThickness - 1]) {
+                    rotate([0, 0, rotation]) {
+                        translate([servo_smallArmCentersLength - (servo_armHoleSpacing * offset), 0, 0]) {
+                            cylinder(h=servo_armThickness + 2, r=servo_armHornHoleRadius);
+                        }
+                    }
+                }
+            }
+        }
+    }       
 }
+
+//$fn=100;
+//sg90Servo(0);
+//_arm(45, true);
