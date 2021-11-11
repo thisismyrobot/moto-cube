@@ -51,7 +51,7 @@ module side_with_servo_rear_mount() {
 module side() {
     height = box_size;
     difference() {
-        translate([0, 0, -height/2]) cube([box_size, wall_thickness, height]);
+        translate([0, 0, -height/2]) cube([box_size/2, wall_thickness, height]);
         union() {
             translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + motion_gaps)]) {
                 cylinder(r=cam_outer_radius + motion_gaps, h=cam_thickness + (motion_gaps*2));
@@ -61,6 +61,19 @@ module side() {
             translate([0, 0, -height/2 - slot_diff]) rotate([0, 0, 45]) translate([-slot_diff, 0, 0]) cube([pow(wall_thickness,2), pow(wall_thickness,2), height + slot_diff*2]);
         }
     }
+
+    mirror([1, 0, 0]) translate([-box_size, 0, 0]) difference() {
+        translate([0, 0, -height/2]) cube([box_size/2, wall_thickness, height]);
+        union() {
+            translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + motion_gaps)]) {
+                cylinder(r=cam_outer_radius + motion_gaps, h=cam_thickness + (motion_gaps*2));
+            }
+            translate([0, 0, hinge_axis_sep]) hinge_slot();
+            translate([0, 0, -hinge_axis_sep-hinge_height]) hinge_slot();
+            translate([0, 0, -height/2 - slot_diff]) rotate([0, 0, 45]) translate([-slot_diff, 0, 0]) cube([pow(wall_thickness,2), pow(wall_thickness,2), height + slot_diff*2]);
+        }
+    }
+
 }
 
 module hinge_slot() {
@@ -95,5 +108,19 @@ module cam() {
         }
     }
 }
+
+function separation_angle(d, r, c) =
+    d < acos(r/c) ?
+        -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r + sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))))
+        :
+        -2 * atan((c * sin(90 - acos(r/c) + d) - r) / (r - sqrt(pow(c,2)- pow(c * sin(90 - acos(r/c) + d), 2))));
+
+module hinge_pair(cam_rotation) {
+    box_angle = separation_angle(cam_rotation, cam_radius, cam_outer_radius);
+    box(cam_rotation);
+    rotate([0, 180, -box_angle]) box(cam_rotation);
+}
+
 //$fn=100;
 //cam();
+//hinge_pair(15);
