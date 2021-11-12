@@ -32,8 +32,12 @@ module box(cam_angle) {
 module side_with_servo_mount_slot() {
     mirror([0, 1, 0]) difference() {
         side();
-        translate([cam_axis_inset_from_wall_outside - (servo_width/2) - fit_gaps, -slot_diff, -servo_mountsTop+servo_mountsThickness+servo_armThickness+fit_gaps*2]) {
-            cube([servo_width + fit_gaps*2, wall_thickness + slot_diff*2, servo_mountsThickness + fit_gaps*2]);
+        translate([box_size/2, 0, 0]) for(index = [0:4])  {
+            rotate([0, index*90, 0]) {
+                translate([-box_size/2, 0, 0]) translate([cam_axis_inset_from_wall_outside - (servo_width/2) - fit_gaps, -slot_diff, -servo_mountsTop+servo_mountsThickness+servo_armThickness+fit_gaps*2]) {
+                    cube([servo_width + fit_gaps*2, wall_thickness + slot_diff*2, servo_mountsThickness + fit_gaps*2]);
+                }
+            }
         }
     }
 }
@@ -55,29 +59,22 @@ module side_with_servo_rear_mount() {
 module side() {
     height = box_size;
     difference() {
-        translate([0, 0, -height/2]) cube([box_size/2, wall_thickness, height]);
+        translate([0, 0, -height/2]) cube([box_size, wall_thickness, height]);
         union() {
-            translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + motion_gaps)]) {
-                cylinder(r=cam_outer_radius + motion_gaps, h=cam_thickness + (motion_gaps*2));
+            translate([box_size/2, 0, 0]) for(index = [0:4])  {
+                rotate([0, index*90, 0]) {
+                    translate([-box_size/2, 0, 0]) {                        
+                        translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + motion_gaps)]) {
+                            cylinder(r=cam_outer_radius + motion_gaps, h=cam_thickness + (motion_gaps*2));
+                        }
+                        translate([0, 0, hinge_axis_sep]) hinge_slot();
+                        translate([0, 0, -hinge_axis_sep-hinge_height]) hinge_slot();
+                        translate([0, 0, -height/2 - slot_diff]) rotate([0, 0, 45]) translate([-slot_diff, 0, 0]) cube([pow(wall_thickness,2), pow(wall_thickness,2), height + slot_diff*2]);
+                    }
+                }
             }
-            translate([0, 0, hinge_axis_sep]) hinge_slot();
-            translate([0, 0, -hinge_axis_sep-hinge_height]) hinge_slot();
-            translate([0, 0, -height/2 - slot_diff]) rotate([0, 0, 45]) translate([-slot_diff, 0, 0]) cube([pow(wall_thickness,2), pow(wall_thickness,2), height + slot_diff*2]);
         }
     }
-
-    mirror([1, 0, 0]) translate([-box_size, 0, 0]) difference() {
-        translate([0, 0, -height/2]) cube([box_size/2, wall_thickness, height]);
-        union() {
-            translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + motion_gaps)]) {
-                cylinder(r=cam_outer_radius + motion_gaps, h=cam_thickness + (motion_gaps*2));
-            }
-            translate([0, 0, hinge_axis_sep]) hinge_slot();
-            translate([0, 0, -hinge_axis_sep-hinge_height]) hinge_slot();
-            translate([0, 0, -height/2 - slot_diff]) rotate([0, 0, 45]) translate([-slot_diff, 0, 0]) cube([pow(wall_thickness,2), pow(wall_thickness,2), height + slot_diff*2]);
-        }
-    }
-
 }
 
 module hinge_slot() {
@@ -127,4 +124,7 @@ module hinge_pair(cam_rotation) {
 
 //$fn=100;
 //cam();
+//box(0);
+//side();
 //hinge_pair(15);
+//side_with_servo_mount_slot();
