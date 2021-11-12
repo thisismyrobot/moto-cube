@@ -40,11 +40,15 @@ module side_with_servo_mount_slot() {
 
 module side_with_servo_rear_mount() {
     side();
-    translate([servo_length + servo_mountsOut + fit_gaps, 0, -servo_totalHeight + servo_mountsTop - cam_thickness/2 + servo_armThickness - servo_mountsThickness - fit_gaps - 10]) {
-         cube([servo_mountsOut, servo_mountsOut+servo_width, 10]);
-    }
-    translate([servo_length + fit_gaps, 0, -servo_totalHeight + servo_mountsTop - cam_thickness/2 + servo_armThickness - servo_mountsThickness - fit_gaps - 10]) {
-         cube([servo_mountsOut, servo_mountsOut - fit_gaps, 10]);
+    translate([box_size/2, 0, 0]) for(index = [0:4])  {
+        rotate([0, index*90, 0]) {
+            translate([-box_size/2, 0, 0]) translate([servo_length + servo_mountsOut + fit_gaps, 0, -servo_totalHeight + servo_mountsTop - cam_thickness/2 + servo_armThickness - servo_mountsThickness - fit_gaps - 10]) {
+                 cube([servo_mountsOut, servo_mountsOut+servo_width, 10]);
+            }
+            translate([-box_size/2, 0, 0]) translate([servo_length + fit_gaps, 0, -servo_totalHeight + servo_mountsTop - cam_thickness/2 + servo_armThickness - servo_mountsThickness - fit_gaps - 10]) {
+                 cube([servo_mountsOut, servo_mountsOut - fit_gaps, 10]);
+            }
+        }
     }
 }
 
