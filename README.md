@@ -17,9 +17,9 @@ I really want the design to avoid this sort of protrusion at the hinge:
 
 ## Inspiration
 
-https://www.youtube.com/watch?v=opGOs7Zxeas which was inspired by
-https://www.youtube.com/erikabergworks (see also
-https://www.instagram.com/erik_aberg_works/).
+[James Bruton's video](https://www.youtube.com/watch?v=opGOs7Zxeas) which was inspired by
+[Erik Aberg's work](https://www.youtube.com/erikabergworks) (see also his
+[Instagram](https://www.instagram.com/erik_aberg_works/)).
 
 ![](doc/configurations.jpg)
 
