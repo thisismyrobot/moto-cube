@@ -45,7 +45,7 @@ with:
 
 `magicbox.scad` has all the parts themselves.
 
-`configuration-*.scad` maps to the configurations shown in Inspiration, above.
+`configuration-*.scad` maps to the configurations shown above.
 
 ## Motion study of the cams, in OpenSCAD
 
