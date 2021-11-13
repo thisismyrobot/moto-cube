@@ -21,17 +21,25 @@ I really want the design to avoid this sort of protrusion at the hinge:
 [Erik Aberg's work](https://www.youtube.com/erikabergworks) (see also his
 [Instagram](https://www.instagram.com/erik_aberg_works/)).
 
-![](doc/configurations.jpg)
-
-Source: https://www.instagram.com/p/CMxrGzos_UX/
-
 ## Current approach
 
 Motorised cams that can push out of the side, each by 90°, against a matching
 cam on the adjacent box.
 
-No idea of the approach to doing the hinge, but I may use magnets to hold in
-place at ends of motion.
+Likely to use some sort of flexible material as the hinge, and magnets to hold
+in place at ends of motion.
+
+The aim is to implement the four configurations that Erik did, which
+apparently covers every model he's made.
+
+![](doc/configurations.jpg)
+
+Source: https://www.instagram.com/p/CMxrGzos_UX/
+
+This is how configuration c currently looks using two panel types I'm working
+with:
+
+![](doc/configuration-c.png)
 
 ## Model
 
