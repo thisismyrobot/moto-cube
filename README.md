@@ -9,9 +9,8 @@ least.
 I'd like to use normal 9g servos or something as similarly commodity.
 
 I'd also like the outside surface to be almost perfect when not in motion - no
-protruding motors etc.
-
-I really want the design to avoid this sort of protrusion at the hinge:
+protruding motors etc. I really want the design to avoid this sort of
+protrusion at the hinge:
 
 ![](doc/bruton.png)
 
@@ -20,7 +19,7 @@ I really want the design to avoid this sort of protrusion at the hinge:
 ## Inspiration
 
 [Erik Aberg's GHOSTKUBE](https://www.youtube.com/erikabergworks) (see also his
-[Instagram](https://www.instagram.com/erik_aberg_works/)) which I cam across
+[Instagram](https://www.instagram.com/erik_aberg_works/)) which I came across
 via [James Bruton's video](https://www.youtube.com/watch?v=opGOs7Zxeas).
 
 ## Current approach
