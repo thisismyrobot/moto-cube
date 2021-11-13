@@ -6,7 +6,7 @@ Cubes that can locomote, or at least reconfigure a bit. I don't need them to
 connect or disconnect, but it would be nice to get two hinges per cube at
 least.
 
-I'd like to use normal 90g servos or something as similarly commodity.
+I'd like to use normal 9g servos or something as similarly commodity.
 
 I'd also like the outside surface to be almost perfect when not in motion - no
 protruding motors etc.
@@ -17,17 +17,19 @@ I really want the design to avoid this sort of protrusion at the hinge:
 
 ## Inspiration
 
-[James Bruton's video](https://www.youtube.com/watch?v=opGOs7Zxeas) which was inspired by
-[Erik Aberg's work](https://www.youtube.com/erikabergworks) (see also his
-[Instagram](https://www.instagram.com/erik_aberg_works/)).
+[Erik Aberg's creations](https://www.youtube.com/erikabergworks) (see also his
+[Instagram](https://www.instagram.com/erik_aberg_works/)) which I cam across
+[via [James Bruton's video](https://www.youtube.com/watch?v=opGOs7Zxeas).
 
 ## Current approach
 
 Motorised cams that can push out of the side, each by 90°, against a matching
-cam on the adjacent box.
+cam on the adjacent box. Because the pushing is against sides already
+connected, it's as close to maintaining the purity of the cubes as I can get.
 
 Likely to use some sort of flexible material as the hinge, and magnets to hold
-in place at ends of motion.
+in place at ends of motion. Magnets will also help relieve force needed at end
+of movement.
 
 The aim is to implement the four configurations that Erik did, which
 apparently covers every model he's made.
@@ -37,7 +39,7 @@ apparently covers every model he's made.
 Source: https://www.instagram.com/p/CMxrGzos_UX/
 
 This is how configuration c currently looks using two panel types I'm working
-with:
+with, using a 100mm cube (I think I can go smaller):
 
 ![](doc/configuration-c.png)
 
