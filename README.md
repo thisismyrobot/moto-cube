@@ -13,7 +13,9 @@ protruding motors etc.
 
 I really want the design to avoid this sort of protrusion at the hinge:
 
-![](doc/bruton.png) ([source](https://youtu.be/opGOs7Zxeas?t=76))
+![](doc/bruton.png)
+
+([source](https://youtu.be/opGOs7Zxeas?t=76))
 
 ## Inspiration
 
