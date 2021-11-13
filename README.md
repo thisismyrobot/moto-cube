@@ -1,4 +1,4 @@
-# Shape-shifting cube
+# Shape-shifting cubes
 
 ## Idea
 
@@ -15,13 +15,13 @@ I really want the design to avoid this sort of protrusion at the hinge:
 
 ![](doc/bruton.png)
 
-([source](https://youtu.be/opGOs7Zxeas?t=76))
+[source](https://youtu.be/opGOs7Zxeas?t=76)
 
 ## Inspiration
 
-[Erik Aberg's creations](https://www.youtube.com/erikabergworks) (see also his
+[Erik Aberg's GHOSTKUBE](https://www.youtube.com/erikabergworks) (see also his
 [Instagram](https://www.instagram.com/erik_aberg_works/)) which I cam across
-[via [James Bruton's video](https://www.youtube.com/watch?v=opGOs7Zxeas).
+via [James Bruton's video](https://www.youtube.com/watch?v=opGOs7Zxeas).
 
 ## Current approach
 
