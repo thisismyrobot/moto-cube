@@ -11,7 +11,9 @@ I'd like to use normal 90g servos or something as similarly commodity.
 I'd also like the outside surface to be almost perfect when not in motion - no
 protruding motors etc.
 
-I really want the design to avoid this sort of protrusion at the hinge: ![](doc/bruton.png) ([source](https://youtu.be/opGOs7Zxeas?t=76))
+I really want the design to avoid this sort of protrusion at the hinge:
+
+![](doc/bruton.png) ([source](https://youtu.be/opGOs7Zxeas?t=76))
 
 ## Inspiration
 
