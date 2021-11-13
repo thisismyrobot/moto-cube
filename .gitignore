@@ -1,2 +1,3 @@
 motion/frame*.png
 /motion/ffmpeg.exe
+print/*.scad
