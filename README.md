@@ -31,9 +31,9 @@ place at ends of motion.
 
 ## Model
 
-assembly.scad shows the assembled idea, at the moment.
+`magicbox.scad` has all the parts themselves.
 
-magicbox.scad has all the parts themselves.
+`configuration-*.scad` maps to the configurations shown in Inspiration, above.
 
 ## Motion study of the cams, in OpenSCAD
 
