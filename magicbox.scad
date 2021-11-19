@@ -67,7 +67,7 @@ module side() {
                 rotate([0, index*90, 0]) {
                     translate([-box_size/2, 0, 0]) {                        
                         translate([cam_axis_inset_from_wall_outside, cam_axis_inset_from_wall_outside, -(cam_thickness/2 + motion_gaps)]) {
-                            cylinder(r=cam_outer_radius + motion_gaps, h=cam_thickness + (motion_gaps*2));
+                            cylinder(r=cam_outer_radius + motion_gaps*4, h=cam_thickness + (motion_gaps*2));
                         }
                         translate([0, 0, hinge_axis_sep]) hinge_slot();
                         translate([0, 0, -hinge_axis_sep-hinge_height]) hinge_slot();
