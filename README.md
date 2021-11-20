@@ -40,7 +40,7 @@ apparently covers every model he's made.
 Source: https://www.instagram.com/p/CMxrGzos_UX/
 
 This is how configuration c currently looks using two panel types I'm working
-with, using a 100mm cube (I think I can go smaller):
+with, using a 100mm cube (I think I can go smaller, maybe down to 75mm):
 
 ![](doc/configuration-c.png)
 
